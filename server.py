@@ -5,7 +5,7 @@ routes = RouteTableDef()
 app = Application()
 binder = Binder()
 
-@routes.get('/script/{scriptname}')
+@routes.get('/scripts/{scriptname}')
 async def get_js(request:Request):
 	data = await binder.get_css(path='css'+request.url.split('/')[-1])
 	return Response(
