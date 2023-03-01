@@ -26,7 +26,7 @@ class Binder:
 	
 	async def _get_object(self, object_filename:str='') -> tuple[bool, dict]:
 		try:
-			obj = await self._get_object(filename=object_filename)
+			obj = await self._get_string(filename=object_filename)
 			return (True, {
 				'status': 200,
 				'body': obj,
@@ -64,7 +64,10 @@ class Binder:
 	async def get_css(self, path:str='') -> dict:
 		status, obj = await self._get_object(object_filename=path)
 		if status:
-			obj['content_type'] = 'text/css'
+			if path.endswith('.css'):
+				obj['content_type'] = 'text/css'
+			else:
+				obj['content_type'] = 'text/plain'
 			return obj
 		else:
 			obj['status'] = 404
@@ -83,6 +86,15 @@ class Binder:
 		status, obj = await self._get_bytes_object(object_filename=path)
 		if status:
 			obj['content_type'] = 'image/png'
+			return obj
+		else:
+			obj['status'] = 404
+			return obj
+
+	async def get_html(self, filename:str='') -> dict:
+		status, obj = await self._get_object(object_filename=filename)
+		if status:
+			obj['content_type'] = 'text/html'
 			return obj
 		else:
 			obj['status'] = 404
