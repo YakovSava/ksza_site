@@ -35,6 +35,7 @@ class Binder:
 		except:
 			return (False, {
 				'status': 404,
+				'body': 'error',
 				'content_type': 'text/plain'
 			})
 
@@ -49,6 +50,7 @@ class Binder:
 		except:
 			return (False, {
 				'status': 404,
+				'body': 'error',
 				'content_type': 'text/plain'
 			})
 

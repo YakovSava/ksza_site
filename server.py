@@ -7,7 +7,7 @@ binder = Binder()
 
 @routes.get('/scripts/{scriptname}')
 async def get_js(request:Request):
-	data = await binder.get_css(path='scripts/'+request.url.split('/')[-1])
+	data = await binder.get_css(path='scripts/'+str(request.url).split('/')[-1])
 	return Response(
 		status=data['status'],
 		body=data['body'],
@@ -16,7 +16,7 @@ async def get_js(request:Request):
 
 @routes.get('/styles/{stylesheet}')
 async def get_css(request:Request):
-	data = await binder.get_js(path='styles/'+request.url.split('/')[-1])
+	data = await binder.get_js(path='styles/'+str(request.url).split('/')[-1])
 	return Response(
 		status=data['status'],
 		body=data['body'],
@@ -25,7 +25,7 @@ async def get_css(request:Request):
 
 @routes.get('/header/{stylesheet}')
 async def get_css2(request:Request):
-	data = await binder.get_js(path='styles/'+request.url.split('/')[-1])
+	data = await binder.get_js(path='styles/'+str(request.url).split('/')[-1])
 	return Response(
 		status=data['status'],
 		body=data['body'],
@@ -34,7 +34,7 @@ async def get_css2(request:Request):
 
 @routes.get('/png/{filename}')
 async def get_png(request:Request):
-	data = await binder.get_png(path='png/'+request.url.split('/')[-1])
+	data = await binder.get_png(path='png/'+str(request.url).split('/')[-1])
 	return Response(
 		status=data['status'],
 		body=data['body'],
@@ -43,7 +43,13 @@ async def get_png(request:Request):
 
 @routes.get('/')
 async def home_page(request:Request):
-	data = await binder.get_
+	data = await binder.get_html(filename='index.html')
+	return Response(
+		status=data['status'],
+		body=data['body'],
+		content_type=data['content_type']
+	)
 
 if __name__ == '__main__':
+	app.add_routes(routes)
 	run_app(app, host='192.168.100.8', port='80')
