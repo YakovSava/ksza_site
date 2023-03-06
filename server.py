@@ -26,7 +26,7 @@ async def service_path(request: Request):
 		)
 	elif method == 'devTest':
 		return json_response(
-			data={'test': 1}
+			data={'test': 2}
 		)
 	else:
 		return json_response(
