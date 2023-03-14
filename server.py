@@ -13,8 +13,8 @@ async def service_path(request: Request):
 		map(
 			lambda x: x.split('=')[1],
 			(str(request.url)
-				.split('?')[1]
-				.split('&')
+			.split('?')[1]
+			.split('&')
 			)
 		)
 	)
@@ -83,6 +83,19 @@ async def home_page(request: Request):
 		content_type=data['content_type']
 	)
 
+
+@routes.get('/servicelist')
+async def getz_service_list(request: Request):
+	data = await binder.get_html('service.html')
+	return Response(
+		status=data['status'],
+		body=data['body'],
+		content_type=data['content_type']
+	)
+
+
+app.add_routes(routes)
+
+
 if __name__ == '__main__':
-	app.add_routes(routes)
-	run_app(app, host='192.168.100.3', port='80')
+	run_app(app, host='192.168.100.2', port='80')

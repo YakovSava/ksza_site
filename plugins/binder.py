@@ -101,3 +101,7 @@ class Binder:
 		else:
 			obj['status'] = 404
 			return obj
+
+	async def get_columns(self):
+		lines = await self._get_string('columns.pylist')
+		return eval(lines)
