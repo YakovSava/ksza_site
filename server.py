@@ -1,14 +1,22 @@
+import asyncio
+
 from json import loads
+from argparse import ArgumentParser
 from aiohttp.web import Application, run_app, RouteTableDef, Response, Request, json_response
 from plugins.binder import Binder
 from static import app as subapp
+from rtmp_server import serve_rtmp
 
 routes = RouteTableDef()
 app = Application()
 binder = Binder()
+parser = ArgumentParser()
 
-app.add_subapp('/', subapp)
+app.add_subapp('/static', subapp)
 
+parser.add_argument('--host', description='Host for listening', default='127.0.0.1')
+parser.add_argument('--port', description='Port for listening', default=80)
+parser.add_argument('--rtmp', description='Port for rtmp-server listening', default=1935)
 
 @routes.get('/service/get?method={method}&data={data}')
 async def service_path(request: Request):
@@ -55,9 +63,18 @@ async def getz_service_list(request: Request):
 		content_type=data['content_type']
 	)
 
-
 app.add_routes(routes)
 
+args = parser.parse_args()
+
+async def listening_server(loop):
+	run_app(app, host=args.host, port=args.port, loop=loop)
 
 if __name__ == '__main__':
-	run_app(app, host='192.168.100.2', port='80')
+	loop = asyncio.get_event_loop()
+	loop.run_until_complete(
+		asyncio.wait([
+			loop.create_task(listening_server(loop)),
+			loop.create_task(serve_rtmp(host=args.host, port=args.rtmp))
+		])
+	)

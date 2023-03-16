@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Список услуг</title>
+</head>
+<body>
+	<div class="dokbar">
+		<a href="/">Тут выпадающее меню</a>
+	</div>
+	<div class="center" id="table">
+		<table>
+			<thead>
+				<tr>
+					<th colspan=3>Все услуги</th>
+				</tr>
+			</thead>
+			<tbody id="dynamicTable"></tbody>
+		</table>
+		<script src="/static/scripts/table.js"></script>
+		<button onclick="updateTable();">Обновить таблицу</button>
+	</div>
+	<div class="basement">тут подвал (там где обычно пишут что все права защищены)</div>
+</body>
+</html>

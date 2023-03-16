@@ -6,7 +6,7 @@ routes = RouteTableDef()
 binder = Binder()
 
 @routes.get('/')
-async def main_staticz_handler(request:Request):
+async def main_static_handler(request:Request):
 	return Response(status=418)
 
 @routes.get('/scripts/{scriptname}')
