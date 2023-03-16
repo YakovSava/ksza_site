@@ -103,5 +103,6 @@ class Binder:
 			return obj
 
 	async def get_columns(self):
-		lines = await self._get_string('columns.pylist')
+		async with aiopen('columns.pylist', 'r', encoding='utf-8') as file:
+			lines = await file.read()
 		return eval(lines)

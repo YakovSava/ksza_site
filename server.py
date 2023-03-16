@@ -1,6 +1,7 @@
 import asyncio
 
 from json import loads
+from urllib.parse import unquote
 from argparse import ArgumentParser
 from aiohttp.web import Application, run_app, RouteTableDef, Response, Request, json_response
 from plugins.binder import Binder
@@ -14,13 +15,13 @@ parser = ArgumentParser()
 
 app.add_subapp('/static', subapp)
 
-parser.add_argument('--host', description='Host for listening', default='127.0.0.1')
-parser.add_argument('--port', description='Port for listening', default=80)
-parser.add_argument('--rtmp', description='Port for rtmp-server listening', default=1935)
+parser.add_argument('--host', help='Host for listening', default='127.0.0.1')
+parser.add_argument('--port', help='Port for listening', default=80)
+parser.add_argument('--rtmp', help='Port for rtmp-server listening', default=1935)
 
-@routes.get('/service/get?method={method}&data={data}')
+@routes.get('/service/get')
 async def service_path(request: Request):
-	method, data = list(
+	try: method, data = list(
 		map(
 			lambda x: x.split('=')[1],
 			(str(request.url)
@@ -29,9 +30,10 @@ async def service_path(request: Request):
 			)
 		)
 	)
-	data = loads(data)
+	except: return Response(status=418)
+	data = loads(unquote(data))
 	if method == 'getColumns':
-		columns = await binder.get_columns(data)
+		columns = await binder.get_columns()
 		return json_response(
 			data={'columns': columns}
 		)
@@ -55,8 +57,17 @@ async def home_page(request: Request):
 
 
 @routes.get('/servicelist')
-async def getz_service_list(request: Request):
+async def get_service_list(request: Request):
 	data = await binder.get_html('service.html')
+	return Response(
+		status=data['status'],
+		body=data['body'],
+		content_type=data['content_type']
+	)
+
+@routes.get('/stream')
+async def get_stream_page(request:Request):
+	data = await binder.get_html('stream.html')
 	return Response(
 		status=data['status'],
 		body=data['body'],
@@ -67,14 +78,16 @@ app.add_routes(routes)
 
 args = parser.parse_args()
 
-async def listening_server(loop):
-	run_app(app, host=args.host, port=args.port, loop=loop)
-
 if __name__ == '__main__':
+	from threading import Timer
+
 	loop = asyncio.get_event_loop()
+
+	pr = Timer(10, run_app, args=(app,), kwargs=dict(host=args.host, port=args.port, loop=asyncio.new_event_loop()))
+	pr.start()
+
 	loop.run_until_complete(
 		asyncio.wait([
-			loop.create_task(listening_server(loop)),
 			loop.create_task(serve_rtmp(host=args.host, port=args.rtmp))
 		])
 	)

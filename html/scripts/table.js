@@ -2,7 +2,8 @@ function getRequest() {
 	fetch('/service/get?method=getColumns&data={}')
 		.then(response => response.json())
 		.then(data => {
-			var jsonData = data;
+			let jsonData = data;
+			return data;
 		})
 		.catch(error => console.error(error));
 	return jsonData;

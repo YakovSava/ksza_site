@@ -76,6 +76,6 @@ async def serve_rtmp(use_protocol:bool=True, host:str='localhost', port:int=1935
 	else:
 		server = await asyncio.start_server(simple_controller, host, port)
 	addr = server.sockets[0].getsockname()
-	print(f' Listening RTMP server on {addr} '.center(9, fillchar='-'))
+	print(f' Listening RTMP server on {addr} '.center(9, '-'))
 	async with server:
 		await server.serve_forever()

@@ -2,11 +2,11 @@ function checkRTMP() {
 	if (flvjs.isSupported) {
 		let player = flvjs.createPlayer({
 			type: 'flv',
-			url: 'rtmp://localost/stream'
+			url: 'rtmp://localost'
 		});
-		var toReturn = false;
+		let toReturn = false;
 		player.on(flvjs.Events.PLAYING, function() {
-			toReturn = true;
+			let toReturn = true;
 		});
 		
 		return toReturn;
@@ -17,7 +17,7 @@ function translation(type) {
 	if (type) {
 		let player = flvjs.createPlayer({
 			type: 'flv',
-			url: 'rtmp://localost/stream'
+			url: 'rtmp://localost'
 		});
 		player.on(flvjs.Events.PLAYING, function() {
 			player.play();
