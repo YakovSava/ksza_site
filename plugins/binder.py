@@ -1,13 +1,13 @@
 from os import getcwd
 from os.path import join
 from aiofiles import open as aiopen
-from plugins.downoloader import Downoloader
+# from plugins.downoloader import Downoloader
 
 class Binder:
 
-	def __init__(self, path:str='html/', downoloader:Downoloader=Downoloader()):
+	def __init__(self, path:str='html/'):
 		self._path = path
-		self._downoload = downoloader
+		# self._downoload = downoloader
 
 	async def _get_string(self, filename:str='') -> str:
 		async with aiopen(join(self._path, filename), 'r', encoding='utf-8') as file:
@@ -18,7 +18,9 @@ class Binder:
 			return await file.read()
 	
 	async def _set_string(self, filename:str='', lines:str='') -> None:
-		self._downoload.write(join(getcwd(), self._path, filename), lines)
+		# self._downoload.write(join(getcwd(), self._path, filename), lines)
+		async with aiopen(join(self._path, filename), 'w', encoding='utf-8') as file:
+			await file.write(liens)
 
 	async def _set_bytes(self, filename:str='', byte:bytes=b'') -> None:
 		async with aiopen(join(self._path, filename), 'wb') as file:
@@ -106,3 +108,6 @@ class Binder:
 		async with aiopen('columns.pylist', 'r', encoding='utf-8') as file:
 			lines = await file.read()
 		return eval(lines)
+
+	async def change_pylist(self, data:dict={'columns': [[1, 'Title', 'Description']]}):
+		pass
