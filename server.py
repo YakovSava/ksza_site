@@ -76,6 +76,15 @@ async def get_stream_page(request:Request):
 		content_type=data['content_type']
 	)
 
+@routes.get('/change')
+async def change_handler(request:Request):
+	data = await binder.get_html('change.html')
+	return Response(
+		status=data['status'],
+		body=data['body'],
+		content_type=data['content_type']
+	)
+
 app.add_routes(routes)
 
 args = parser.parse_args()
