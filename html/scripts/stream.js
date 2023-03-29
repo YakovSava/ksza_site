@@ -28,7 +28,7 @@ function translation(type) {
 		});
 	} else {
 		var element = document.getElementById('videoPlayer');
-		// element.remove();
+		element.remove();
 
 		var element = document.getElementById('stream');
 		element.innerHTML = 'Транляция не происходит или завершена!';

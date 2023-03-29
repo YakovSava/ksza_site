@@ -1,26 +1,85 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Список услуг</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+		rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap"
+		rel="stylesheet">
+	<link rel="stylesheet" href="styles/style.css">
+	<link rel="stylesheet" href="styles/reset.css">
 </head>
+
 <body>
-	<div class="dokbar">
-		<a href="/">Тут выпадающее меню</a>
-	</div>
-	<div class="center" id="table">
-		<table>
-			<thead>
-				<tr>
-					<th colspan=3>Все услуги</th>
-				</tr>
-			</thead>
-			<tbody id="dynamicTable"></tbody>
-		</table>
-		<script src="/static/scripts/table.js"></script>
-		<button onclick="updateTable().then(() => {});">Обновить таблицу</button>
-	</div>
-	<div class="basement">тут подвал (там где обычно пишут что все права защищены)</div>
+	<header class="header">
+		<div class="wrapper">
+			<div class="header__content">
+				<h1>Закурдаева Ксения</h1>
+				<div class="header__dropdowns">
+					<div class="dropdown">
+						<button class="dropdown__button" data-path="zero">Соцсети</button>
+						<ul data-target="zero" class="dropdown__content">
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Вконтакте</a></li>
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Инстаграм</a></li>
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Группа в ВК</a></li>
+						</ul>
+					</div>
+					<div class="dropdown">
+						<button class="dropdown__button" data-path="one">Услуги</button>
+						<ul data-target="one" class="dropdown__content">
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Депиляция</a></li>
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Косметический уход</a></li>
+						</ul>
+					</div>
+					<div class="dropdown">
+						<button class="dropdown__button" data-path="two">Оплата</button>
+						<ul data-target="two" class="dropdown__content">
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Оплата за курсы</a></li>
+							<li class="dropdown__li"><a href="#" class="dropdown__link">Записаться</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<main class="main">
+		<div class="wrapper">
+			<div class="main__content">
+				<div class="table">
+				</div>
+				<aside class="aside">
+					<a href="#">Косметичекий уход</a>
+					<a href="#">Комплекс</a>
+				</aside>
+			</div>
+		</div>
+	</main>
+	<script src="scripts/table.js" def></script>
+	<footer class="footer">
+		<div class="wrapper">
+			<div class="footer__content">
+				<section class="footer__left-side">
+					<ul>
+						<li>Вконтакте</li>
+						<li>Инстаграм (Запрещена на территории РФ)</li>
+					</ul>
+				</section>
+				<section class="footer__right-side">
+					Закурдаева Ксения
+				</section>
+			</div>
+		</div>
+	</footer>
+	<script src="scripts/script.js"></script>
 </body>
+
 </html>

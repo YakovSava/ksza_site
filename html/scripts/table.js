@@ -1,33 +1,71 @@
-async function getRequest() {
-	try {
-		let response = await fetch('/service/get?method=getColumns&data={}');
-		var data = await response.json();
-		return data;
-	} catch (error) {
-		console.error(error);
-		throw error;
+var _table_ = document.createElement('table'),
+	_tr_ = document.createElement('tr'),
+	_th_ = document.createElement('th'),
+	_td_ = document.createElement('td');
+
+// Builds the HTML Table out of myList json data from Ivy restful service.
+function buildHtmlTable(arr) {
+	var table = _table_.cloneNode(false),
+		columns = addAllColumnHeaders(arr, table);
+	for (var i = 0, maxi = arr.length; i < maxi; ++i) {
+		var tr = _tr_.cloneNode(false);
+		for (var j = 0, maxj = columns.length; j < maxj; ++j) {
+			var td = _td_.cloneNode(false);
+			var cellValue = arr[i][columns[j]];
+			td.appendChild(document.createTextNode(arr[i][columns[j]] || ''));
+			tr.appendChild(td);
+		}
+		table.appendChild(tr);
 	}
+	return table;
 }
 
-function processRawData(data) {
-	if (data != null) {
-		var trElements = Array.from({length: data.columns.lenght}, (value, index) => document.createElement('tr'));
-		for (let i = 0; i < trElements.lenght; i++) {
-			for (let j = 0; j < 3; j++) {
-				var thElement = document.createElement('th');
-				thElement.innerHTML = data.columns[i][j];	
-				trElements[i].appendChild(thElement);
+// Adds a header row to the table and returns the set of columns.
+// Need to do union of keys from all records as some records may not contain
+// all records
+function addAllColumnHeaders(arr, table) {
+	var columnSet = [],
+		tr = _tr_.cloneNode(false);
+	for (var i = 0, l = arr.length; i < l; i++) {
+		for (var key in arr[i]) {
+			if (arr[i].hasOwnProperty(key) && columnSet.indexOf(key) === -1) {
+				columnSet.push(key);
+				var th = _th_.cloneNode(false);
+				th.appendChild(document.createTextNode(key));
+				tr.appendChild(th);
 			}
 		}
-		return trElements;
 	}
+	table.appendChild(tr);
+	return columnSet;
 }
+var table1 = 
+[
+	{
+		"name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. -",
+		"price": "100руб",
+	},
+	{
+		"name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. -",
+		"price": "100руб",
+	},
+	{
+		"name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. -",
+		"price": "100руб",
+	},
+	{
+		"name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. -",
+		"price": "100руб",
+	},
+	{
+		"name": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. -",
+		"price": "100руб",
+	},
+]
+;
 
-async function updateTable() {
-	var doc = document.getElementById('dynamicTable');
-	var data = await getRequest();
-	var elements = processRawData(data);
-	for (let i = 0; i < elements.length; i++) doc.appendChild(elements[i]);
+function buildTable() {
+	let table2 = document.querySelector('.table');
+	table2.appendChild(buildHtmlTable(table1));
 }
-
-updateTable().then(() => {});
+buildTable()
