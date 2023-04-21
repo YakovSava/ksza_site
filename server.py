@@ -42,7 +42,7 @@ async def service_path(request: Request):
 			data={'test': 2}
 		)
 	elif method == 'changePylist':
-		await bindere.change_pylist(data)
+		await binder.change_pylist(data)
 	else:
 		return json_response(
 			data={'error': f'Method {method} not exist!'}

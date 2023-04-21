@@ -41,9 +41,9 @@ async def get_css2(request: Request):
     )
 
 
-@routes.get('/png/{filename}')
+@routes.get('/styles/png/{filename}')
 async def get_png(request: Request):
-    data = await binder.get_png(path='png/' + str(request.url).split('/')[-1])
+    data = await binder.get_png(path='styles/png/' + str(request.url).split('/')[-1])
     return Response(
         status=data['status'],
         body=data['body'],
