@@ -3,7 +3,7 @@ import asyncio
 from json import loads
 from urllib.parse import unquote
 from argparse import ArgumentParser
-from aiohttp.web import Application, run_app, RouteTableDef, Response, Request, json_response
+from aiohttp.web import Application, RouteTableDef, Response, Request, json_response, AppRunner, TCPSite
 from plugins.binder import Binder
 from static import app as subapp
 from rtmp_server import serve_rtmp
@@ -89,16 +89,22 @@ app.add_routes(routes)
 
 args = parser.parse_args()
 
-if __name__ == '__main__':
-	from threading import Timer
+async def run_app():
+    runner = AppRunner(app)
+    await runner.setup()
+    site = TCPSite(runner, args.host, args.port)
+    await site.start()
+    print(f"App is running")
+    while True: ...
 
+if __name__ == '__main__':
 	loop = asyncio.get_event_loop()
 
-	pr = Timer(10, run_app, args=(app,), kwargs=dict(host=args.host, port=args.port, loop=asyncio.new_event_loop()))
-	pr.start()
+	# asyncio.to_thread(run_app, app, host=args.host, port=args.port, loop=asyncio.new_event_loop())
 
 	loop.run_until_complete(
 		asyncio.wait([
-			loop.create_task(serve_rtmp(host=args.host, port=args.rtmp))
+			loop.create_task(serve_rtmp(host=args.host, port=args.rtmp)),
+			loop.create_task(run_app())
 		])
 	)
